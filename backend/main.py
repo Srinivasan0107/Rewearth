@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
@@ -13,9 +14,20 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# CORS configuration for development and production
+allowed_origins = [
+    "http://localhost:3000",  # Local development
+    "http://localhost:3001",  # Alternative local port
+]
+
+# Add production origins from environment variable
+production_origin = os.getenv("FRONTEND_URL")
+if production_origin:
+    allowed_origins.append(production_origin)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
