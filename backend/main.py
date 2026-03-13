@@ -19,6 +19,7 @@ allowed_origins = [
     "http://localhost:3000",  # Local development
     "http://localhost:3001",  # Alternative local port
     "https://frontend-xi-ten-45.vercel.app",  # Vercel production
+    "https://corie-epicyclic-asymptotically.ngrok-free.dev",  # ngrok tunnel (if needed)
 ]
 
 # Add additional production origins from environment variable
