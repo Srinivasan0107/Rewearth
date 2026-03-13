@@ -48,8 +48,9 @@ Follow these steps to deploy ReWearth to production quickly.
 
 4. **Configure**:
    - Framework Preset: `Next.js` (auto-detected)
-   - Root Directory: `frontend`
+   - **Root Directory**: `frontend` ⚠️ **IMPORTANT: Click "Edit" and set this!**
    - Build Command: `npm run build` (auto-detected)
+   - Install Command: `npm install` (auto-detected)
 
 5. **Add Environment Variables**:
    ```
