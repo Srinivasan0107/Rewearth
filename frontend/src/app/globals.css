@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 0.75rem;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: #fafaf7;
+  color: #1a1a1a;
+}
+
+@layer base {
+  h1, h2, h3 { font-family: var(--font-display); }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .gradient-leaf {
+    background: linear-gradient(135deg, #2d6a4f 0%, #52b788 60%, #95d5b2 100%);
+  }
+  .gradient-earth {
+    background: linear-gradient(135deg, #a67c52 0%, #d4a373 60%, #faedcd 100%);
+  }
+  .card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+  }
+}
