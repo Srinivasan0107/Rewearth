@@ -5,9 +5,9 @@ from uuid import UUID
 import random
 import string
 
-from ..database import get_db
-from ..models import Swap, SwapStatus, User, WardrobeItem, ChatMessage, MessageType
-from ..schemas import SwapCreate, SwapOut, OTPVerify, ChatMessageCreate, ChatMessageOut, ProposeDetails, MESSAGE_RENDERED_TEXT
+from database import get_db
+from models import Swap, SwapStatus, User, WardrobeItem, ChatMessage, MessageType
+from schemas import SwapCreate, SwapOut, OTPVerify, ChatMessageCreate, ChatMessageOut, ProposeDetails, MESSAGE_RENDERED_TEXT
 
 router = APIRouter(prefix="/swaps", tags=["Swaps"])
 

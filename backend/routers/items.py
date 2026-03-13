@@ -3,10 +3,10 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
 
-from ..database import get_db
-from ..models import WardrobeItem, User
-from ..schemas import WardrobeItemCreate, WardrobeItemOut, WardrobeItemUpdate
-from ..config import settings
+from database import get_db
+from models import WardrobeItem, User
+from schemas import WardrobeItemCreate, WardrobeItemOut, WardrobeItemUpdate
+from config import settings
 from supabase import create_client
 
 router = APIRouter(prefix="/items", tags=["Items"])

@@ -3,9 +3,9 @@ from sqlalchemy.orm import Session
 from typing import List
 from uuid import UUID
 
-from ..database import get_db
-from ..models import User, WardrobeItem
-from ..schemas import UserCreate, UserOut, UserPublic, UserUpdate, WardrobeItemOut
+from database import get_db
+from models import User, WardrobeItem
+from schemas import UserCreate, UserOut, UserPublic, UserUpdate, WardrobeItemOut
 
 router = APIRouter(prefix="/users", tags=["Users"])
 

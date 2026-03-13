@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import datetime
 from uuid import UUID
-from .models import SwapStatus, MessageType
+from models import SwapStatus, MessageType
 
 MESSAGE_RENDERED_TEXT = {
     MessageType.ASK_CONDITION: "What is the condition of this item?",
