@@ -18,9 +18,10 @@ app = FastAPI(
 allowed_origins = [
     "http://localhost:3000",  # Local development
     "http://localhost:3001",  # Alternative local port
+    "https://frontend-xi-ten-45.vercel.app",  # Vercel production
 ]
 
-# Add production origins from environment variable
+# Add additional production origins from environment variable
 production_origin = os.getenv("FRONTEND_URL")
 if production_origin:
     allowed_origins.append(production_origin)
