@@ -4,6 +4,8 @@
 
 A full-stack sustainable clothing swap platform with coin-based economy, structured negotiation, OTP confirmation, and Google OAuth.
 
+> 📸 **[View Screenshots](SCREENSHOTS.md)** - See the app in action!
+
 ---
 
 ## Project Structure
