@@ -4,20 +4,6 @@ from datetime import datetime
 from uuid import UUID
 from models import SwapStatus, MessageType
 
-MESSAGE_RENDERED_TEXT = {
-    MessageType.ASK_CONDITION: "What is the condition of this item?",
-    MessageType.ASK_SIZE: "Can you confirm the exact size?",
-    MessageType.ASK_MORE_PHOTOS: "Could you share more photos?",
-    MessageType.OFFER_SWAP: "I would like to swap for this item.",
-    MessageType.ACCEPT_SWAP: "I accept this swap request.",
-    MessageType.REJECT_SWAP: "I am rejecting this swap request.",
-    MessageType.PROPOSE_TIME: "I'd like to propose a meeting time.",
-    MessageType.PROPOSE_LOCATION: "I'd like to propose a meeting location.",
-    MessageType.CONFIRM_MEETING: "I confirm the meeting details.",
-    MessageType.READY_TO_SWAP: "I am ready to complete the swap!",
-    MessageType.NOT_ELIGIBLE_SWAP: "Insufficient coins to proceed with this swap.",
-}
-
 
 # ─── User Schemas ───────────────────────────────────────────────
 class UserCreate(BaseModel):
@@ -93,34 +79,21 @@ class WardrobeItemOut(BaseModel):
 
 # ─── Chat Message Schemas ────────────────────────────────────────
 class ChatMessageCreate(BaseModel):
-    message_type: MessageType
-    payload: Optional[str] = None
+    content: str
+    message_type: Optional[MessageType] = MessageType.TEXT
 
 class ChatMessageOut(BaseModel):
     id: UUID
     swap_id: UUID
     sender_id: UUID
     message_type: MessageType
-    rendered_text: str
-    payload: Optional[str]
+    content: Optional[str]
+    extra_data: Optional[str]
     created_at: datetime
     sender: UserPublic
 
     class Config:
         from_attributes = True
-
-    @classmethod
-    def from_orm_with_render(cls, msg):
-        return cls(
-            id=msg.id,
-            swap_id=msg.swap_id,
-            sender_id=msg.sender_id,
-            message_type=msg.message_type,
-            rendered_text=MESSAGE_RENDERED_TEXT.get(msg.message_type, msg.message_type.value),
-            payload=msg.payload,
-            created_at=msg.created_at,
-            sender=UserPublic.model_validate(msg.sender),
-        )
 
 
 # ─── Swap Schemas ─────────────────────────────────────────────────
@@ -134,22 +107,27 @@ class SwapOut(BaseModel):
     owner_id: UUID
     status: SwapStatus
     coins_deducted: bool
-    otp_code: Optional[str]
-    confirmed_requester: bool
-    confirmed_owner: bool
-    proposed_time: Optional[str]
-    proposed_location: Optional[str]
+    requester_otp: Optional[str]
+    owner_otp: Optional[str]
+    requester_verified: bool
+    owner_verified: bool
+    meeting_time: Optional[str]
+    meeting_location: Optional[str]
     created_at: datetime
     requester: UserPublic
     owner: UserPublic
     item: WardrobeItemOut
-    messages: List[ChatMessageOut]
+    # messages: List[ChatMessageOut]  # Removed to prevent loading issues with old data
 
     class Config:
         from_attributes = True
 
+class OTPGenerate(BaseModel):
+    pass
+
 class OTPVerify(BaseModel):
     otp_code: str
 
-class ProposeDetails(BaseModel):
-    value: str
+class MeetingProposal(BaseModel):
+    meeting_time: str
+    meeting_location: str

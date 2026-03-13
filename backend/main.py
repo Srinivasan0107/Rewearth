@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
-from routers import users, items, swaps
+from routers import users, items, swaps, chat
 
-Base.metadata.create_all(bind=engine)
+# Commented out to avoid connection issues on startup
+# Tables already exist in database
+# Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="ReWearth API",
@@ -22,6 +24,7 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(items.router)
 app.include_router(swaps.router)
+app.include_router(chat.router)
 
 
 @app.get("/health")

@@ -58,14 +58,23 @@ def create_item(item_data: WardrobeItemCreate, user_id: UUID, db: Session = Depe
 async def upload_image(file: UploadFile = File(...)):
     supabase = get_supabase()
     content = await file.read()
-    filename = f"clothing/{file.filename}"
-    res = supabase.storage.from_("clothing-images").upload(
-        filename, content, {"content-type": file.content_type}
-    )
-    if hasattr(res, "error") and res.error:
-        raise HTTPException(status_code=500, detail="Upload failed")
-    public_url = supabase.storage.from_("clothing-images").get_public_url(filename)
-    return {"image_url": public_url}
+    
+    # Generate unique filename
+    import time
+    timestamp = int(time.time() * 1000)
+    filename = f"clothing/{timestamp}_{file.filename}"
+    
+    try:
+        # Upload to Rewearth bucket
+        res = supabase.storage.from_("Rewearth").upload(
+            filename, content, {"content-type": file.content_type}
+        )
+        
+        # Get public URL
+        public_url = supabase.storage.from_("Rewearth").get_public_url(filename)
+        return {"image_url": public_url}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
 
 @router.patch("/{item_id}", response_model=WardrobeItemOut)

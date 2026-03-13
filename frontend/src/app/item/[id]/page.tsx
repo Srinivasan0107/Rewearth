@@ -37,7 +37,7 @@ export default function ItemDetailPage() {
     setRequesting(true);
     try {
       const swap = await api.swaps.create(id, currentUser.id) as { id: string };
-      router.push(`/swap/${swap.id}`);
+      router.push(`/chat/${swap.id}`);
     } catch (e: any) {
       alert(e.message);
     } finally {

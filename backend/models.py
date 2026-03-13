@@ -17,17 +17,15 @@ class SwapStatus(str, enum.Enum):
 
 
 class MessageType(str, enum.Enum):
-    ASK_CONDITION = "ASK_CONDITION"
-    ASK_SIZE = "ASK_SIZE"
-    ASK_MORE_PHOTOS = "ASK_MORE_PHOTOS"
+    TEXT = "TEXT"
+    SYSTEM = "SYSTEM"
     OFFER_SWAP = "OFFER_SWAP"
     ACCEPT_SWAP = "ACCEPT_SWAP"
     REJECT_SWAP = "REJECT_SWAP"
-    PROPOSE_TIME = "PROPOSE_TIME"
-    PROPOSE_LOCATION = "PROPOSE_LOCATION"
+    PROPOSE_MEETING = "PROPOSE_MEETING"
     CONFIRM_MEETING = "CONFIRM_MEETING"
-    READY_TO_SWAP = "READY_TO_SWAP"
-    NOT_ELIGIBLE_SWAP = "NOT_ELIGIBLE_SWAP"
+    GENERATE_OTP = "GENERATE_OTP"
+    OTP_VERIFIED = "OTP_VERIFIED"
 
 
 class User(Base):
@@ -75,11 +73,12 @@ class Swap(Base):
     owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     status = Column(SAEnum(SwapStatus), default=SwapStatus.negotiating, nullable=False)
     coins_deducted = Column(Boolean, default=False, nullable=False)
-    otp_code = Column(String(4), nullable=True)
-    confirmed_requester = Column(Boolean, default=False, nullable=False)
-    confirmed_owner = Column(Boolean, default=False, nullable=False)
-    proposed_time = Column(String, nullable=True)
-    proposed_location = Column(String, nullable=True)
+    requester_otp = Column(String(6), nullable=True)
+    owner_otp = Column(String(6), nullable=True)
+    requester_verified = Column(Boolean, default=False, nullable=False)
+    owner_verified = Column(Boolean, default=False, nullable=False)
+    meeting_time = Column(String, nullable=True)
+    meeting_location = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     item = relationship("WardrobeItem", back_populates="swaps")
@@ -94,8 +93,9 @@ class ChatMessage(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     swap_id = Column(UUID(as_uuid=True), ForeignKey("swaps.id"), nullable=False)
     sender_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    message_type = Column(SAEnum(MessageType), nullable=False)
-    payload = Column(String, nullable=True)
+    message_type = Column(SAEnum(MessageType), default=MessageType.TEXT, nullable=False)
+    content = Column(Text, nullable=True)
+    extra_data = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     swap = relationship("Swap", back_populates="messages")

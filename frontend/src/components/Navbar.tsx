@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { User } from "@/types";
 import { api } from "@/lib/api";
-import { Coins, Leaf, LogOut, Plus, ShoppingBag, User as UserIcon } from "lucide-react";
+import { Coins, Leaf, LogOut, Plus, ShoppingBag, User as UserIcon, MessageCircle } from "lucide-react";
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
@@ -60,6 +60,9 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <NavLink href="/marketplace" current={pathname}>
               <ShoppingBag size={16} /> Marketplace
+            </NavLink>
+            <NavLink href="/messages" current={pathname}>
+              <MessageCircle size={16} /> Messages
             </NavLink>
             <NavLink href="/green-alternatives" current={pathname}>
               <Leaf size={16} /> Green Alternatives
