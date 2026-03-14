@@ -4,6 +4,14 @@
 
 A full-stack sustainable clothing swap platform with coin-based economy, structured negotiation, OTP confirmation, and Google OAuth.
 
+## 🚀 Live Deployment
+
+| Service | URL |
+|---|---|
+| Frontend | https://rewearth-app.vercel.app |
+| Backend API | https://rewearth-copy-production.up.railway.app |
+| API Docs | https://rewearth-copy-production.up.railway.app/docs |
+
 > 📸 **[View Screenshots](SCREENSHOTS.md)** - See the app in action!
 
 ---
@@ -154,13 +162,17 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 | Feature | Description |
 |---|---|
 | 🔐 Google Sign-In | Supabase OAuth with automatic user profile creation |
+| 📧 Email + Password | Sign up / sign in with email and password |
 | 👗 Digital Wardrobe | Instagram-style 3-column grid profile |
 | 🛍️ Marketplace | Browse all available items with filters |
-| 💬 Structured Chat | 10 predefined message types, no free text |
+| 💬 Chat System | Real-time swap chat with quick replies |
+| 🤝 Swap Flow | Accept → Propose Meeting → Confirm → OTP → Complete |
 | 🪙 Coin System | 120 starting coins, 20 per swap, validated before deduction |
-| 📅 Swap Scheduling | Propose time & location via structured messages |
-| 🔐 OTP Confirmation | 4-digit OTP for physical swap confirmation |
+| 📅 Swap Scheduling | Propose time & location, confirm meeting details |
+| 🔐 OTP Confirmation | 6-digit OTP sent via email for physical swap verification |
+| 📬 Email Notifications | Swap accepted & OTP emails via Resend |
 | 🌿 Green Alternatives | Curated sustainable fashion brands |
+| 🖼️ Image Upload | Upload clothing images to Supabase Storage |
 
 ## Swap State Machine
 
@@ -179,11 +191,49 @@ negotiating → agreed → scheduled → pending_confirmation → completed
 | GET | `/users/me/{auth_id}` | Get current user |
 | GET | `/users/{username}` | Get public profile |
 | GET | `/users/{username}/wardrobe` | Get user's items |
+| PATCH | `/users/{user_id}` | Update user profile |
 | GET | `/items/` | List marketplace items |
 | GET | `/items/{id}` | Get item details |
 | POST | `/items/` | Create item |
 | POST | `/items/upload-image` | Upload image to Supabase Storage |
+| PATCH | `/items/{id}` | Update item |
+| DELETE | `/items/{id}` | Delete item |
 | POST | `/swaps/` | Create swap request |
 | GET | `/swaps/{id}` | Get swap details |
-| POST | `/swaps/{id}/message` | Send structured message |
-| POST | `/swaps/{id}/verify-otp` | Verify OTP to complete swap |
+| GET | `/swaps/user/{user_id}` | Get all swaps for a user |
+| GET | `/chat/{swap_id}/messages` | Get chat messages |
+| POST | `/chat/{swap_id}/messages` | Send a chat message |
+| POST | `/chat/{swap_id}/accept` | Accept swap request |
+| POST | `/chat/{swap_id}/propose-meeting` | Propose meeting time & place |
+| POST | `/chat/{swap_id}/confirm-meeting` | Confirm meeting |
+| POST | `/chat/{swap_id}/generate-otp` | Generate OTP (sent via email) |
+| POST | `/chat/{swap_id}/verify-otp` | Verify OTP to complete swap |
+| GET | `/health` | Health check |
+
+---
+
+## Deploying
+
+### Frontend (Vercel)
+```bash
+cd frontend
+npx vercel --prod
+```
+
+### Backend (Railway)
+```bash
+railway login
+railway up
+```
+
+Set these env vars in Railway:
+```
+DATABASE_URL
+SUPABASE_URL
+SUPABASE_KEY
+SUPABASE_SERVICE_KEY
+RESEND_API_KEY
+FRONTEND_URL=https://rewearth-app.vercel.app
+```
+
+Then update `NEXT_PUBLIC_API_URL` in Vercel with your Railway backend URL and redeploy.
